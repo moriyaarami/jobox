@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Jobox - פלטפורמת חיפוש עבודה הפוכה | מעסיקים מחפשים אותך</title>
+    <meta name="title" content="Jobox - פלטפורמת חיפוש עבודה הפוכה | מעסיקים מחפשים אותך" />
+    <meta name="description" content="פלטפורמת חיפוש עבודה חדשנית בעברית שבה מעסיקים מחפשים מועמדים. הירשמו, צרו פרופיל מקצועי ותנו למעסיקים למצוא אתכם." />
+    <meta name="keywords" content="חיפוש עבודה, דרושים, מעסיקים, מועמדים, קריירה, עבודה בהיטק, פלטפורמת גיוס" />
+    <meta name="author" content="Jobox Team" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Hebrew" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jobox.co.il/" />
+    <meta property="og:title" content="Jobox - פלטפורמת חיפוש עבודה הפוכה" />
+    <meta property="og:description" content="פלטפורמת חיפוש עבודה חדשנית בעברית שבה מעסיקים מחפשים מועמדים. הירשמו, צרו פרופיל מקצועי ותנו למעסיקים למצוא אתכם." />
+    <meta property="og:image" content="https://jobox.co.il/og-image.jpg" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:site_name" content="Jobox" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://jobox.co.il/" />
+    <meta property="twitter:title" content="Jobox - פלטפורמת חיפוש עבודה הפוכה" />
+    <meta property="twitter:description" content="פלטפורמת חיפוש עבודה חדשנית בעברית שבה מעסיקים מחפשים מועמדים." />
+    <meta property="twitter:image" content="https://jobox.co.il/og-image.jpg" />
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Jobox",
+      "alternateName": "ג'ובוקס",
+      "url": "https://jobox.co.il",
+      "description": "פלטפורמת חיפוש עבודה הפוכה בעברית",
+      "inLanguage": "he",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://jobox.co.il/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Jobox",
+        "url": "https://jobox.co.il"
+      }
+    }
+    </script>
+    
+    <!-- Accessibility -->
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Performance hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    
+    <!-- Hebrew fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Critical CSS for RTL -->
+    <style>
+      /* Critical RTL styles to prevent layout shift */
+      * {
+        direction: rtl;
+      }
+      
+      body {
+        font-family: 'Heebo', 'Assistant', system-ui, -apple-system, sans-serif;
+        direction: rtl;
+        text-align: right;
+      }
+      
+      /* Loading state */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #2563eb;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Skip to main content for accessibility */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 6px;
+        background: #2563eb;
+        color: white;
+        padding: 8px;
+        text-decoration: none;
+        border-radius: 4px;
+        z-index: 10000;
+      }
+      
+      .skip-link:focus {
+        top: 6px;
+      }
+    </style>
+  </head>
+  <body dir="rtl">
+    <!-- Skip to main content for screen readers -->
+    <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
+    
+    <!-- Loading screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Main app container -->
+    <div id="root" role="application" aria-label="Jobox - פלטפורמת חיפוש עבודה"></div>
+    
+    <!-- Remove loading screen when app loads -->
+    <script>
+      window.addEventListener('load', function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.style.display = 'none';
+        }
+      });
+    </script>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
