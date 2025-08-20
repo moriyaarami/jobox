@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy } from 'react';
-import { AuthProvider } from './contexts/AuthContext';
+import {  useAuth } from './contexts/AuthContext';
+
 import { SearchProvider } from './contexts/SearchContext';
 import { PaymentProvider } from './contexts/PaymentContext';
 import { PrivacyProvider } from './contexts/PrivacyContext';
@@ -21,6 +22,7 @@ const ChatPage = lazy(() => import('./pages/ChatPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 
 // Placeholder components for routes that aren't implemented yet
 const PlaceholderPage = ({ title }) => (
@@ -31,14 +33,15 @@ const PlaceholderPage = ({ title }) => (
 );
 
 function App() {
+ const{user}=useAuth();
+ console.log(user)
   return (
     <AccessibilityProvider>
-      <AuthProvider>
-        <SearchProvider>
-          <PaymentProvider>
-            <PrivacyProvider>
-              <AdminProvider>
-                <Router>
+      <SearchProvider>
+        <PaymentProvider>
+          <PrivacyProvider>
+            <AdminProvider>
+              <Router>
                   <Routes>
                     {/* Routes without layout (login, signup) */}
                     <Route path={AppRoutes.login} element={
@@ -51,9 +54,15 @@ function App() {
                         <SignupPage />
                       </LazyWrapper>
                     } />
-                    
+                    <Route path="/dashboard" element={
+                      <LazyWrapper>
+                        <DashboardPage />
+                      </LazyWrapper>
+                    } />
+
                     {/* Routes with layout */}
-                    <Route path="/" element={<Layout />}>
+                 
+                    <Route path="/" element={user? <Layout />:<Navigate to={AppRoutes.login} replace />}>
                       <Route index element={
                         <LazyWrapper>
                           <HomePage />
@@ -102,13 +111,14 @@ function App() {
                       {/* Catch all route - redirect to 404 */}
                       <Route path="*" element={<Navigate to={AppRoutes.notFound} replace />} />
                     </Route>
+
                   </Routes>
                 </Router>
               </AdminProvider>
             </PrivacyProvider>
           </PaymentProvider>
         </SearchProvider>
-      </AuthProvider>
+      
     </AccessibilityProvider>
   );
 }

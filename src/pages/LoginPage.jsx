@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Routes } from '@/lib/routes';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
+import {SetLogInStorage} from '@/LocalStorage/logInStorage';
 
 const LoginPage = () => {
+  console.log("LoginPage rendered");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -19,11 +21,11 @@ const LoginPage = () => {
   const { login, loginWithGoogle, loginWithLinkedIn, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (isAuthenticated && !loading) {
       navigate('/', { replace: true });
     }
-  }, [isAuthenticated, loading, navigate]);
+  }, [isAuthenticated, loading, navigate]); */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,9 +47,10 @@ const LoginPage = () => {
     }
     
     setIsLoading(false);
+    SetLogInStorage(true);
   };
 
-  const handleGoogleLogin = async () => {
+/*   const handleGoogleLogin = async () => {
     setError('');
     setIsLoading(true);
     
@@ -75,7 +78,7 @@ const LoginPage = () => {
     }
     
     setIsLoading(false);
-  };
+  }; */
 
   if (loading) {
     return (
@@ -165,16 +168,16 @@ const LoginPage = () => {
             </Button>
           </form>
           
-          <div className="relative">
+         {/*  <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">או</span>
             </div>
-          </div>
+          </div> */}
           
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Button 
               variant="outline" 
               className="w-full" 
@@ -213,7 +216,7 @@ const LoginPage = () => {
                 </>
               )}
             </Button>
-          </div>
+          </div> */}
           
           <div className="text-center text-sm">
             <span className="text-muted-foreground">אין לך חשבון? </span>

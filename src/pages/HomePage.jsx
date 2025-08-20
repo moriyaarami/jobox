@@ -6,11 +6,129 @@ import heroImage from '@/assets/hero-image.png';
 import jobSeekerIllustration from '@/assets/job-seeker-illustration.png';
 import employerIllustration from '@/assets/employer-illustration.png';
 import successIllustration from '@/assets/success-illustration.png';
+import { GetLogInStatus, SetLogInStorage } from '@/LocalStorage/logInStorage';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HomePage = () => {
+  const userLogIn = GetLogInStatus();
+   const { user, isAuthenticated, logout } = useAuth();
+  if (isAuthenticated && user) {
+    return (
+      <div className="space-y-12">
+        {/* Welcome Section for Authenticated Users */}
+        <section className="text-center space-y-6">
+          <div className="mb-8">
+            <img 
+              src={heroImage} 
+              alt="Jobox - פלטפורמת חיפוש עבודה הפוכה" 
+              className="mx-auto max-w-2xl w-full h-auto"
+            />
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+            ברוך הבא, <span className="text-primary">{user.name}</span>!
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            {user.type === 'seeker' 
+              ? 'הפרופיל שלך פעיל ומעסיקים יכולים לפנות אליך. בדוק את ההודעות שלך לעדכונים.'
+              : 'ברוך הבא למערכת החיפוש שלנו. מצא את המועמדים המושלמים לחברה שלך.'
+            }
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" asChild>
+              <Link to="/dashboard">
+                לוח הבקרה שלי
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link to="/profile">
+                הפרופיל שלי
+              </Link>
+            </Button>
+            {user.type==="employer"&&(
+             <Button size="lg" variant="outline" asChild>
+              <Link to="/search">
+           חפש מועמדים
+              </Link>
+            </Button>  
+            )}
+           
+            <Button size="lg" variant="destructive" onClick={()=>
+              {   logout(),
+                  SetLogInStorage('false');
+              }
+            }>
+              התנתק
+            </Button>
+          </div>
+        </section>
+
+        {/* Quick Actions for Authenticated Users */}
+        <section className="grid md:grid-cols-3 gap-8">
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <Users className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold">הפרופיל שלי</h3>
+            <p className="text-muted-foreground">
+              עדכן את הפרטים שלך ושפר את הנראות שלך למעסיקים
+            </p>
+            <Button variant="outline" asChild>
+              <Link to="/profile">צפה בפרופיל</Link>
+            </Button>
+          </div>
+          
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <MessageCircle className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold">הודעות</h3>
+            <p className="text-muted-foreground">
+              בדוק הודעות חדשות ופניות ממעסיקים
+            </p>
+            <Button variant="outline" asChild>
+              <Link to="/messages">הודעות</Link>
+            </Button>
+          </div>
+          
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <Search className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold">חיפוש</h3>
+            <p className="text-muted-foreground">
+              {user.type === 'seeker' ? 'חפש משרות פתוחות' : 'חפש מועמדים מתאימים'}
+            </p>
+            <Button variant="outline" asChild>
+              <Link to="/search">התחל חיפוש</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Info Section */}
+        <section className="bg-muted rounded-lg p-8 text-center space-y-6">
+          <div className="mb-6">
+            <img 
+              src={successIllustration} 
+              alt="הצלחה בחיפוש עבודה" 
+              className="mx-auto w-32 h-32 object-contain"
+            />
+          </div>
+          <h2 className="text-2xl font-bold">רוצה לדעת עוד על Jobox?</h2>
+          <p className="text-muted-foreground">
+            למד עוד על הפלטפורמה שלנו ואיך היא עובדת
+          </p>
+          <Button variant="outline" asChild>
+            <Link to="/info">מידע נוסף</Link>
+          </Button>
+        </section>
+      </div>
+    );
+  }
   return (
+  
     <div className="space-y-12">
       {/* Hero Section */}
+     
       <section className="text-center space-y-6">
         <div className="mb-8">
           <img 
@@ -28,12 +146,12 @@ const HomePage = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" asChild>
-            <Link to={Routes.signup} {...getRouteProps(Routes.signup)}>
+            <Link to={Routes.signup} state={{usertype:'seeker'}} {...getRouteProps(Routes.signup)}>
               הצטרפו כמחפשי עבודה
             </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link to={Routes.signup} {...getRouteProps(Routes.signup)}>
+            <Link to={Routes.signup} state={{usertype:'employer'}} {...getRouteProps(Routes.signup)}>
               הצטרפו כמעסיקים
             </Link>
           </Button>
@@ -192,6 +310,7 @@ const HomePage = () => {
           </Button>
         </div>
       </section>
+      
     </div>
   );
 };

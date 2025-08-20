@@ -15,6 +15,7 @@ import {
   Building2,
   Users
 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,10 +28,11 @@ const Layout = () => {
     document.documentElement.classList.toggle('dark');
   };
 
+  
+
   // Navigation items for job seekers
   const seekerNavItems = [
     { icon: Home, label: 'דף הבית', route: Routes.home },
-    { icon: Search, label: 'חיפוש', route: Routes.search },
     { icon: MessageCircle, label: 'הודעות', route: Routes.messages },
     { icon: User, label: 'פרופיל', route: Routes.seekerDash },
     { icon: Settings, label: 'הגדרות', route: Routes.settings }
@@ -46,7 +48,9 @@ const Layout = () => {
   ];
 
   // For now, using seeker nav items as default
-  const navItems = seekerNavItems;
+  const {user}=useAuth();
+  
+  const navItems = !user?null : user.type === 'seeker' ? seekerNavItems : employerNavItems;
 
   const NavItem = ({ icon: Icon, label, route, isMobile = false }) => {
     const isActive = location.pathname === route;
@@ -90,7 +94,7 @@ const Layout = () => {
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navItems.map((item) => (
+                  {user && navItems.map((item) => (
                     <li key={item.route}>
                       <NavItem {...item} />
                     </li>
@@ -168,7 +172,7 @@ const Layout = () => {
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t md:hidden">
         <nav className="flex justify-around py-2">
-          {navItems.slice(0, 5).map((item) => (
+          {user&&navItems.slice(0, 5).map((item) => (
             <NavItem key={item.route} {...item} isMobile />
           ))}
         </nav>

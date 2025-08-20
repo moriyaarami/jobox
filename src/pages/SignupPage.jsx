@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate,useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Routes, getRouteProps } from '@/lib/routes';
 import { Mail, Lock, Eye, EyeOff, User, Building2 } from 'lucide-react';
+import SetStorage from '@/LocalStorage/signUpStorage';
 
 const SignupPage = () => {
+  const location=useLocation();
+  const navigate=useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [userType, setUserType] = useState('seeker');
+  const [userType, setUserType] = useState(location.state?.usertype || 'seeker');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,10 +23,13 @@ const SignupPage = () => {
     companyName: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // TODO: Implement signup logic
+   await SetStorage({ ...formData, userType });
     console.log('Signup attempt:', { ...formData, userType });
+    // Redirect or show success message
+    navigate(Routes.login)
   };
 
   const handleChange = (e) => {
@@ -48,14 +55,14 @@ const SignupPage = () => {
             <Label>סוג המשתמש</Label>
             <RadioGroup value={userType} onValueChange={setUserType} className="grid grid-cols-2 gap-4">
               <div className="flex items-center space-x-2 space-x-reverse">
-                <RadioGroupItem value="seeker" id="seeker" />
+                <RadioGroupItem value="seeker" id="seeker" className="mx-2"/>
                 <Label htmlFor="seeker" className="flex items-center gap-2 cursor-pointer">
                   <User className="h-4 w-4" />
                   מחפש עבודה
                 </Label>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse">
-                <RadioGroupItem value="employer" id="employer" />
+                <RadioGroupItem value="employer" id="employer" className="mx-2"/>
                 <Label htmlFor="employer" className="flex items-center gap-2 cursor-pointer">
                   <Building2 className="h-4 w-4" />
                   מעסיק
@@ -168,7 +175,7 @@ const SignupPage = () => {
           </Button>
         </form>
 
-        <div className="space-y-4">
+       {/*  <div className="space-y-4">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -185,15 +192,16 @@ const SignupPage = () => {
             <Button variant="outline" className="w-full">
               LinkedIn
             </Button>
-          </div>
-        </div>
+          </div> 
+        </div> */}
 
         <div className="text-center space-y-2">
           <p className="text-sm text-muted-foreground">
+            {console.log(Routes.login)}
             כבר יש לכם חשבון?{' '}
             <Link 
               to={Routes.login} 
-              {...getRouteProps(Routes.login)}
+               
               className="font-medium text-primary hover:underline"
             >
               היכנסו כאן
@@ -201,7 +209,7 @@ const SignupPage = () => {
           </p>
           <Link 
             to={Routes.home} 
-            {...getRouteProps(Routes.home)}
+            /* {...getRouteProps(Routes.home)} */
             className="text-sm text-muted-foreground hover:text-foreground"
           >
             חזרה לדף הבית
