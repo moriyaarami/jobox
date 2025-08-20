@@ -197,7 +197,7 @@ const HomePage = () => {
         
         <div className="grid md:grid-cols-2 gap-12">
           {/* For Job Seekers */}
-          <div className="space-y-6">
+          <div className="space-y-6 ">
             <div className="text-center mb-6">
               <img 
                 src={jobSeekerIllustration} 
@@ -206,7 +206,7 @@ const HomePage = () => {
               />
             </div>
             <h3 className="text-2xl font-semibold text-center">למחפשי עבודה</h3>
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               <div className="flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-semibold">
                   1

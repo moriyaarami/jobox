@@ -62,7 +62,7 @@ function App() {
 
                     {/* Routes with layout */}
                  
-                    <Route path="/" element={user? <Layout />:<Navigate to={AppRoutes.login} replace />}>
+                    <Route path="/" element={ <Layout /> }>
                       <Route index element={
                         <LazyWrapper>
                           <HomePage />

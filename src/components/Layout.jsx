@@ -16,11 +16,22 @@ import {
   Users
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import HomePage from '@/pages/HomePage';
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+  const {user}=useAuth();
+
+   if(!user){
+  return(
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
+      <HomePage/>
+      </div>
+   
+  );
+}  
 
   // Toggle dark mode
   const toggleDarkMode = () => {
@@ -28,7 +39,7 @@ const Layout = () => {
     document.documentElement.classList.toggle('dark');
   };
 
-  
+ 
 
   // Navigation items for job seekers
   const seekerNavItems = [
@@ -48,9 +59,9 @@ const Layout = () => {
   ];
 
   // For now, using seeker nav items as default
-  const {user}=useAuth();
   
-  const navItems = !user?null : user.type === 'seeker' ? seekerNavItems : employerNavItems;
+  
+  const navItems = !user ?null : user.type === 'seeker' ? seekerNavItems : employerNavItems;
 
   const NavItem = ({ icon: Icon, label, route, isMobile = false }) => {
     const isActive = location.pathname === route;
@@ -73,6 +84,7 @@ const Layout = () => {
   };
 
   return (
+   
     <div className="min-h-screen bg-background">
       {/* Desktop Sidebar */}
       <aside className="hidden md:fixed md:inset-y-0 md:right-0 md:z-50 md:w-64 md:flex md:flex-col">
