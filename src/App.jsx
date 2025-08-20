@@ -22,7 +22,7 @@ const ChatPage = lazy(() => import('./pages/ChatPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
-const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const DashboardPage = lazy(() => import('./pages/DashBoardPage'));
 
 // Placeholder components for routes that aren't implemented yet
 const PlaceholderPage = ({ title }) => (
