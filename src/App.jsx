@@ -76,9 +76,9 @@ function App() {
                           <SearchPage />
                         </LazyWrapper>
                       } />
-                      <Route path={AppRoutes.onboarding} element={<PlaceholderPage title="הכנה לשימוש" />} />
-                      <Route path={AppRoutes.seekerDash} element={<ProfilePage/>} />
-                      <Route path={AppRoutes.employerDash} element={<PlaceholderPage title="לוח בקרה - מעסיק" />} />
+                    {/*   <Route path={AppRoutes.onboarding} element={<PlaceholderPage title="הכנה לשימוש" />} /> */}
+                    {/*   <Route path={AppRoutes.seekerDash} element={<ProfilePage/>} /> */}
+                      {/* <Route path={AppRoutes.employerDash} element={<PlaceholderPage title="לוח בקרה - מעסיק" />} /> */}
                        <Route path='/employer/profile/:id' element={
                         <LazyWrapper>
                           <ProfilePageEmployer />
@@ -95,7 +95,7 @@ function App() {
                           <ChatPage />
                         </LazyWrapper>
                       } />
-                      <Route path={AppRoutes.billing} element={
+                     {/* <Route path={AppRoutes.billing} element={
                         <LazyWrapper>
                           <BillingPage />
                         </LazyWrapper>
@@ -104,13 +104,13 @@ function App() {
                         <LazyWrapper>
                           <AdminPage />
                         </LazyWrapper>
-                      } />
-                      <Route path={AppRoutes.ads} element={<PlaceholderPage title="ניהול פרסומות" />} />
+                      } /> */} 
+                      {/* <Route path={AppRoutes.ads} element={<PlaceholderPage title="ניהול פרסומות" />} /> */}
                       <Route path={AppRoutes.settings} element={<SettingPage/>} />
-                      <Route path={AppRoutes.support} element={<PlaceholderPage title="תמיכה" />} />
+                    {/*   <Route path={AppRoutes.support} element={<PlaceholderPage title="תמיכה" />} />
                       <Route path={AppRoutes.termsSeekers} element={<PlaceholderPage title="תנאי שימוש - מחפשי עבודה" />} />
                       <Route path={AppRoutes.termsEmployers} element={<PlaceholderPage title="תנאי שימוש - מעסיקים" />} />
-                      <Route path={AppRoutes.privacy} element={<PlaceholderPage title="מדיניות פרטיות" />} />
+                      <Route path={AppRoutes.privacy} element={<PlaceholderPage title="מדיניות פרטיות" />} /> */}
                       <Route path={AppRoutes.notFound} element={
                         <LazyWrapper>
                           <NotFoundPage />

@@ -72,7 +72,7 @@ const HomePage = () => {
         </section>
 
         {/* Quick Actions for Authenticated Users */}
-        <section className="grid md:grid-cols-3 gap-8">
+        <section className={`grid ${user.type === 'seeker' ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-8`}>
           <div className="text-center space-y-4">
             <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
               <Users className="h-6 w-6 text-primary" />

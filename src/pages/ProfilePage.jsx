@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { 
   MapPin, 
   Clock, 
@@ -15,16 +20,27 @@ import {
   Eye,
   EyeOff,
   Shield,
-  Verified
+  Verified,
+  Edit3,
+  Trash2,
+  Upload,
+  FileText,
+  Download
 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ProfilePage = () => {
   const { id } = useParams();
   const [isInterested, setIsInterested] = useState(false);
   const [cvRequested, setCvRequested] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [cvFile, setCvFile] = useState(null);
+  const fileInputRef = useRef(null);
 
-  // Mock candidate data
-  const candidate = {
+  const { user } = useAuth();
+
+  // Mock candidate data - now as state to allow editing
+  const [candidate, setCandidate] = useState({
     id: id || '1',
     name: 'מועמד מקצועי',
     title: 'מפתח Full Stack Senior',
@@ -66,8 +82,11 @@ const ProfilePage = () => {
       workType: 'היברידי',
       availability: 'זמין להתחלה מיידית',
       remoteWork: true
-    }
-  };
+    },
+    cvFileName: null
+  });
+
+  const [editForm, setEditForm] = useState({ ...candidate });
 
   const handleInterest = () => {
     setIsInterested(!isInterested);
@@ -77,8 +96,90 @@ const ProfilePage = () => {
     setCvRequested(true);
   };
 
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    setCandidate({ ...editForm });
+    setIsEditDialogOpen(false);
+    // Here you would typically make an API call to update the data
+  };
+
+  const handleDelete = () => {
+    // Here you would typically make an API call to delete the profile
+    console.log('Profile deleted');
+    // Redirect to home or login page
+  };
+
+  const handleInputChange = (field, value) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleArrayInputChange = (field, index, value) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: prev[field].map((item, i) => i === index ? value : item)
+    }));
+  };
+
+  const handleObjectInputChange = (field, subField, value) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [subField]: value
+      }
+    }));
+  };
+
+  const addArrayItem = (field) => {
+    if (field === 'experience_details') {
+      setEditForm(prev => ({
+        ...prev,
+        [field]: [...prev[field], { title: '', company: '', period: '', description: '' }]
+      }));
+    } else if (field === 'education') {
+      setEditForm(prev => ({
+        ...prev,
+        [field]: [...prev[field], { degree: '', institution: '', year: '' }]
+      }));
+    } else {
+      setEditForm(prev => ({
+        ...prev,
+        [field]: [...prev[field], '']
+      }));
+    }
+  };
+
+  const removeArrayItem = (field, index) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: prev[field].filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleCvUpload = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      setCvFile(file);
+      setCandidate(prev => ({
+        ...prev,
+        cvFileName: file.name
+      }));
+      // Here you would typically upload the file to your backend
+      console.log('CV uploaded:', file.name);
+    } else {
+      alert('אנא בחר קובץ PDF בלבד');
+    }
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6 p-4">
       {/* Header Card */}
       <Card>
         <CardContent className="p-6">
@@ -133,8 +234,7 @@ const ProfilePage = () => {
               <p className="text-muted-foreground">{candidate.bio}</p>
             </div>
           </div>
-          
-          <div className="flex flex-wrap gap-3 mt-6">
+          {id!==user.id ?<div className="flex flex-wrap gap-3 mt-6">
             <Button 
               onClick={handleInterest}
               variant={isInterested ? "default" : "outline"}
@@ -162,7 +262,7 @@ const ProfilePage = () => {
               )}
             </Button>
             
-            <Button variant="outline">
+            <Button variant="outline" className="flex-1 sm:flex-none">
               <MessageCircle className="ml-2 h-4 w-4" />
               שלח הודעה
             </Button>
@@ -170,7 +270,215 @@ const ProfilePage = () => {
             <Button variant="ghost" size="icon">
               <Share2 className="h-4 w-4" />
             </Button>
-          </div>
+          </div> :(<>
+            {/* Profile Management Buttons */}
+          <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t">
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="flex-1 sm:flex-none">
+                  <Edit3 className="ml-2 h-4 w-4" />
+                  עריכת פרטים
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>עריכת פרופיל</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleEditSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="name">שם מלא</Label>
+                      <Input
+                        id="name"
+                        value={editForm.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="title">תפקיד</Label>
+                      <Input
+                        id="title"
+                        value={editForm.title}
+                        onChange={(e) => handleInputChange('title', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="location">מיקום</Label>
+                      <Input
+                        id="location"
+                        value={editForm.location}
+                        onChange={(e) => handleInputChange('location', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="experience">ניסיון</Label>
+                      <Input
+                        id="experience"
+                        value={editForm.experience}
+                        onChange={(e) => handleInputChange('experience', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="salary">שכר מבוקש</Label>
+                      <Input
+                        id="salary"
+                        value={editForm.salary}
+                        onChange={(e) => handleInputChange('salary', e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="bio">תיאור אישי</Label>
+                    <Textarea
+                      id="bio"
+                      value={editForm.bio}
+                      onChange={(e) => handleInputChange('bio', e.target.value)}
+                      rows={3}
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>כישורים</Label>
+                    {editForm.skills.map((skill, index) => (
+                      <div key={index} className="flex gap-2 mt-2">
+                        <Input
+                          value={skill}
+                          onChange={(e) => handleArrayInputChange('skills', index, e.target.value)}
+                          placeholder="כישור"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeArrayItem('skills', index)}
+                        >
+                          הסר
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addArrayItem('skills')}
+                      className="mt-2"
+                    >
+                      הוסף כישור
+                    </Button>
+                  </div>
+                  
+                  <div>
+                    <Label>שפות</Label>
+                    {editForm.languages.map((language, index) => (
+                      <div key={index} className="flex gap-2 mt-2">
+                        <Input
+                          value={language}
+                          onChange={(e) => handleArrayInputChange('languages', index, e.target.value)}
+                          placeholder="שפה ורמה"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeArrayItem('languages', index)}
+                        >
+                          הסר
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addArrayItem('languages')}
+                      className="mt-2"
+                    >
+                      הוסף שפה
+                    </Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="workType">סוג עבודה</Label>
+                      <Input
+                        id="workType"
+                        value={editForm.preferences.workType}
+                        onChange={(e) => handleObjectInputChange('preferences', 'workType', e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="availability">זמינות</Label>
+                      <Input
+                        id="availability"
+                        value={editForm.preferences.availability}
+                        onChange={(e) => handleObjectInputChange('preferences', 'availability', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end gap-2 pt-4">
+                    <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                      ביטול
+                    </Button>
+                    <Button type="submit">
+                      שמור שינויים
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleCvUpload}
+              accept=".pdf"
+              style={{ display: 'none' }}
+            />
+            
+            <Button variant="outline" onClick={triggerFileUpload} className="flex-1 sm:flex-none">
+              <Upload className="ml-2 h-4 w-4" />
+              העלה קורות חיים
+            </Button>
+            
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="flex-1 sm:flex-none">
+                  <Trash2 className="ml-2 h-4 w-4" />
+                  מחק פרופיל
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    פעולה זו תמחק את הפרופיל שלך לצמיתות. לא ניתן לבטל פעולה זו.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>ביטול</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                    מחק פרופיל
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div> 
+          </>
+          
+          )
+          
+          }
+          
+
+         
         </CardContent>
       </Card>
 
@@ -229,6 +537,24 @@ const ProfilePage = () => {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* CV File */}
+          {candidate.cvFileName && (
+            <Card>
+              <CardHeader>
+                <CardTitle>קורות חיים</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-blue-500" />
+                  <span className="text-sm truncate">{candidate.cvFileName}</span>
+                  <Button variant="ghost" size="sm">
+                    <Download className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Languages */}
           <Card>
             <CardHeader>

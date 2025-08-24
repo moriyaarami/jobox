@@ -45,7 +45,7 @@ const Layout = () => {
   const seekerNavItems = [
     { icon: Home, label: 'דף הבית', route: Routes.home },
     { icon: MessageCircle, label: 'הודעות', route: Routes.messages },
-    { icon: User, label: 'פרופיל', route: Routes.seekerDash },
+    { icon: User, label: 'פרופיל', route: Routes.profile(user.id) },
     { icon: Settings, label: 'הגדרות', route: Routes.settings }
   ];
 
@@ -118,61 +118,6 @@ const Layout = () => {
         </div>
       </aside>
 
-      {/* Mobile Header */}
-     {/*  <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-card px-4 py-4 shadow-sm md:hidden">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsSidebarOpen(true)}
-          className="h-8 w-8"
-        >
-          <Menu className="h-4 w-4" />
-        </Button>
-        <div className="flex-1 text-sm font-semibold leading-6">
-          <Link to={Routes.home} {...getRouteProps(Routes.home)} className="text-xl font-bold">
-            Jobox
-          </Link>
-        </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleDarkMode}
-          className="h-8 w-8"
-        >
-          {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </Button>
-      </div> */}
-
-      {/* Mobile Sidebar Overlay */}
-    {/*   {isSidebarOpen && (
-        <div className="relative z-50 md:hidden">
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-card px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
-            <div className="flex items-center justify-between">
-              <Link to={Routes.home} {...getRouteProps(Routes.home)} className="text-xl font-bold">
-                Jobox
-              </Link>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSidebarOpen(false)}
-                className="h-8 w-8"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            <nav className="mt-6">
-              <ul role="list" className="space-y-1">
-                {navItems.map((item) => (
-                  <li key={item.route}>
-                    <NavItem {...item} />
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )} */}
 
       {/* Main Content */}
     <main className="md:pr-64">

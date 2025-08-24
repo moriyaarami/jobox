@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Search, MapPin, DollarSign, Clock, Star, Loader2, CheckCircle, Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import ProfilePage from './ProfilePage';
 
 const SearchPage = () => {
   const { 
@@ -121,7 +123,9 @@ const SearchPage = () => {
           </Button>
           <Button size="sm" variant="outline" className="flex-1">
             <Eye className="h-4 w-4 ml-1" />
-            צפה בפרופיל
+            <Link to={`/profile/${candidate.id}`} element={<ProfilePage />}>
+              צפה בפרופיל
+            </Link>
           </Button>
         </div>
         
