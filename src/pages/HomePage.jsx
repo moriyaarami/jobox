@@ -9,9 +9,15 @@ import successIllustration from '@/assets/success-illustration.png';
 import { GetLogInStatus, SetLogInStorage } from '@/LocalStorage/logInStorage';
 import { useAuth } from '@/contexts/AuthContext';
 
+const PlaceholderPage = ({ title }) => (
+  <div className="text-center space-y-4">
+    <h1 className="text-3xl font-bold">{title}</h1>
+    <p className="text-muted-foreground">עמוד זה בפיתוח</p>
+  </div>
+);
+
 const HomePage = () => {
-  const userLogIn = GetLogInStatus();
-   const { user, isAuthenticated, logout } = useAuth();
+   const { user, isAuthenticated } = useAuth();
   if (isAuthenticated && user) {
     return (
       <div className="space-y-12">
@@ -34,16 +40,26 @@ const HomePage = () => {
             }
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
+           {/*  <Button size="lg" asChild>
               <Link to="/dashboard">
                 לוח הבקרה שלי
               </Link>
+            </Button> */}
+             <Button size="lg"  asChild>
+              <Link to="/messages">הודעות</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link to="/profile">
-                הפרופיל שלי
-              </Link>
-            </Button>
+            {console.log(user.type==='seeker')}
+      <Button size="lg" variant="outline" asChild>
+  {user.type === 'seeker' ? (
+    <Link to={Routes.profile(user.id)} {...getRouteProps(Routes.profile(user.id))}>
+      הפרופיל שלי
+    </Link>
+  ) : (
+    <Link to={Routes.employerProfile(user.id)} {...getRouteProps(Routes.employerProfile(user.id))}>
+      הפרופיל שלי
+    </Link>
+  )}
+</Button>
             {user.type==="employer"&&(
              <Button size="lg" variant="outline" asChild>
               <Link to="/search">
@@ -51,14 +67,7 @@ const HomePage = () => {
               </Link>
             </Button>  
             )}
-           
-            <Button size="lg" variant="destructive" onClick={()=>
-              {   logout(),
-                  SetLogInStorage('false');
-              }
-            }>
-              התנתק
-            </Button>
+
           </div>
         </section>
 
@@ -73,7 +82,7 @@ const HomePage = () => {
               עדכן את הפרטים שלך ושפר את הנראות שלך למעסיקים
             </p>
             <Button variant="outline" asChild>
-              <Link to="/profile">צפה בפרופיל</Link>
+              <Link to={Routes.profile(user.id)}>צפה בפרופיל</Link>
             </Button>
           </div>
           
@@ -89,19 +98,21 @@ const HomePage = () => {
               <Link to="/messages">הודעות</Link>
             </Button>
           </div>
-          
-          <div className="text-center space-y-4">
-            <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-              <Search className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold">חיפוש</h3>
-            <p className="text-muted-foreground">
-              {user.type === 'seeker' ? 'חפש משרות פתוחות' : 'חפש מועמדים מתאימים'}
-            </p>
-            <Button variant="outline" asChild>
-              <Link to="/search">התחל חיפוש</Link>
-            </Button>
-          </div>
+          {user.type === 'employer' && (
+    <div className="text-center space-y-4">
+              <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Search className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">חיפוש</h3>
+              <p className="text-muted-foreground">
+                {user.type === 'seeker' ? 'חפש משרות פתוחות' : 'חפש מועמדים מתאימים'}
+              </p>
+              <Button variant="outline" asChild>
+                <Link to="/search">התחל חיפוש</Link>
+              </Button>
+            </div> 
+          )}
+        
         </section>
 
         {/* Info Section */}

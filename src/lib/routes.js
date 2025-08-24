@@ -8,6 +8,7 @@ export const Routes = {
   employerDash: "/employer/dashboard",
   search: "/search",
   profile: (id) => `/profile/${id}`,
+  employerProfile: (id) => `/employer/profile/${id}`,
   messages: "/messages",
   billing: "/billing",
   admin: "/admin",

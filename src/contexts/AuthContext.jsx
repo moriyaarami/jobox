@@ -161,7 +161,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // OAuth login simulation
-  const loginWithGoogle = async () => {
+ /*  const loginWithGoogle = async () => {
     setLoading(true);
     
     try {
@@ -229,7 +229,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }; */
 
   const value = {
     user,
@@ -238,8 +238,8 @@ export const AuthProvider = ({ children }) => {
     signup,
     logout,
     updateProfile,
-    loginWithGoogle,
-    loginWithLinkedIn,
+   /*  loginWithGoogle,
+    loginWithLinkedIn, */
     isAuthenticated: !!user,
     isSeeker: user?.type === 'seeker',
     isEmployer: user?.type === 'employer'

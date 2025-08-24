@@ -11,6 +11,8 @@ import Layout from './components/Layout';
 import LazyWrapper from './components/LazyWrapper';
 import { Routes as AppRoutes } from './lib/routes';
 import './App.css';
+import SettingPage from './pages/SettingPage';
+
 
 // Lazy load components for better performance
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -23,6 +25,7 @@ const BillingPage = lazy(() => import('./pages/BillingPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const DashboardPage = lazy(() => import('./pages/DashBoardPage'));
+const ProfilePageEmployer = lazy(() => import('./pages/ProfilePageEmployer'));
 
 // Placeholder components for routes that aren't implemented yet
 const PlaceholderPage = ({ title }) => (
@@ -34,7 +37,7 @@ const PlaceholderPage = ({ title }) => (
 
 function App() {
  const{user}=useAuth();
- console.log(user)
+ 
   return (
     <AccessibilityProvider>
       <SearchProvider>
@@ -54,11 +57,11 @@ function App() {
                         <SignupPage />
                       </LazyWrapper>
                     } />
-                    <Route path="/dashboard" element={
+                   {/*  <Route path="/dashboard" element={
                       <LazyWrapper>
                         <DashboardPage />
                       </LazyWrapper>
-                    } />
+                    } /> */}
 
                     {/* Routes with layout */}
                  
@@ -74,13 +77,19 @@ function App() {
                         </LazyWrapper>
                       } />
                       <Route path={AppRoutes.onboarding} element={<PlaceholderPage title="הכנה לשימוש" />} />
-                      <Route path={AppRoutes.seekerDash} element={<PlaceholderPage title="לוח בקרה - מחפש עבודה" />} />
+                      <Route path={AppRoutes.seekerDash} element={<ProfilePage/>} />
                       <Route path={AppRoutes.employerDash} element={<PlaceholderPage title="לוח בקרה - מעסיק" />} />
+                       <Route path='/employer/profile/:id' element={
+                        <LazyWrapper>
+                          <ProfilePageEmployer />
+                        </LazyWrapper>
+                      } />
                       <Route path="/profile/:id" element={
                         <LazyWrapper>
                           <ProfilePage />
                         </LazyWrapper>
                       } />
+                     
                       <Route path={AppRoutes.messages} element={
                         <LazyWrapper>
                           <ChatPage />
@@ -97,7 +106,7 @@ function App() {
                         </LazyWrapper>
                       } />
                       <Route path={AppRoutes.ads} element={<PlaceholderPage title="ניהול פרסומות" />} />
-                      <Route path={AppRoutes.settings} element={<PlaceholderPage title="הגדרות" />} />
+                      <Route path={AppRoutes.settings} element={<SettingPage/>} />
                       <Route path={AppRoutes.support} element={<PlaceholderPage title="תמיכה" />} />
                       <Route path={AppRoutes.termsSeekers} element={<PlaceholderPage title="תנאי שימוש - מחפשי עבודה" />} />
                       <Route path={AppRoutes.termsEmployers} element={<PlaceholderPage title="תנאי שימוש - מעסיקים" />} />
