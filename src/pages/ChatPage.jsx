@@ -238,7 +238,7 @@ const ChatPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-2">
+               {/*  <div className="flex items-center gap-2">
                   <Button variant="ghost" size="icon">
                     <Phone className="h-4 w-4" />
                   </Button>
@@ -248,7 +248,7 @@ const ChatPage = () => {
                   <Button variant="ghost" size="icon">
                     <MoreVertical className="h-4 w-4" />
                   </Button>
-                </div>
+                </div> */}
               </div>
             </CardHeader>
 
@@ -268,9 +268,9 @@ const ChatPage = () => {
                 <Button variant="ghost" size="icon">
                   <Paperclip className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="icon">
+               {/*  <Button variant="ghost" size="icon">
                   <Smile className="h-4 w-4" />
-                </Button>
+                </Button> */}
                 <Input
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -285,10 +285,10 @@ const ChatPage = () => {
               
               {/* Quick Actions */}
               <div className="flex gap-2 mt-2">
-                <Button variant="ghost" size="sm">
+                {/* <Button variant="ghost" size="sm">
                   <Archive className="ml-1 h-3 w-3" />
                   ארכב
-                </Button>
+                </Button> */}
                 <Button variant="ghost" size="sm">
                   <Flag className="ml-1 h-3 w-3" />
                   דווח

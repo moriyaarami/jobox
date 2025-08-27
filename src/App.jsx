@@ -12,6 +12,8 @@ import LazyWrapper from './components/LazyWrapper';
 import { Routes as AppRoutes } from './lib/routes';
 import './App.css';
 import SettingPage from './pages/SettingPage';
+import { ProtectedRoute } from './components/ProtectedRoute ';
+import { Toaster } from './components/ui/sonner';
 
 
 // Lazy load components for better performance
@@ -44,17 +46,22 @@ function App() {
         <PaymentProvider>
           <PrivacyProvider>
             <AdminProvider>
+              <Toaster position="top-right"/>
               <Router>
                   <Routes>
                     {/* Routes without layout (login, signup) */}
                     <Route path={AppRoutes.login} element={
                       <LazyWrapper>
-                        <LoginPage />
+                        <ProtectedRoute redirectTo={AppRoutes.home} condition={(isAuth)=>isAuth===true}>
+                          <LoginPage />
+                        </ProtectedRoute>
                       </LazyWrapper>
                     } />
                     <Route path={AppRoutes.signup} element={
                       <LazyWrapper>
-                        <SignupPage />
+                        <ProtectedRoute redirectTo={AppRoutes.home} condition={(isAuth)=>isAuth===true}>
+                          <SignupPage />
+                        </ProtectedRoute>
                       </LazyWrapper>
                     } />
                    {/*  <Route path="/dashboard" element={
@@ -73,6 +80,7 @@ function App() {
                       } />
                       <Route path={AppRoutes.search} element={
                         <LazyWrapper>
+
                           <SearchPage />
                         </LazyWrapper>
                       } />
@@ -123,6 +131,7 @@ function App() {
 
                   </Routes>
                 </Router>
+                
               </AdminProvider>
             </PrivacyProvider>
           </PaymentProvider>

@@ -285,12 +285,12 @@ const ProfilePageEmployer = () => {
             </Dialog>
             
             <AlertDialog>
-              <AlertDialogTrigger asChild>
+             {/*  <AlertDialogTrigger asChild>
                 <Button variant="destructive" className="flex-1 sm:flex-none">
                   <Trash2 className="ml-2 h-4 w-4" />
                   מחק פרופיל
                 </Button>
-              </AlertDialogTrigger>
+              </AlertDialogTrigger> */}
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>

@@ -28,6 +28,7 @@ import {
   Download
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import  GhostModeButton  from '@/components/GhostModeButton';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -123,6 +124,15 @@ const ProfilePage = () => {
     }));
   };
 
+   const handleNestedArrayInputChange = (arrayField, index, subField, value) => {
+    setEditForm(prev => ({
+      ...prev,
+      [arrayField]: prev[arrayField].map((item, i) =>
+        i === index ? { ...item, [subField]: value } : item
+      )
+    }));
+  };
+
   const handleObjectInputChange = (field, subField, value) => {
     setEditForm(prev => ({
       ...prev,
@@ -191,13 +201,14 @@ const ProfilePage = () => {
                   {candidate.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center justify-center mt-2 gap-1">
-                {candidate.isOnline && (
+              <div className="flex items-center justify-center mt-2 gap-1 ">
+               {/*  {candidate.isOnline && (
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                )}
-                <span className="text-xs text-muted-foreground">
+                )} */}
+                {/* <span className="text-xs text-muted-foreground">
                   {candidate.isOnline ? 'מחובר עכשיו' : 'לא מחובר'}
-                </span>
+                </span> */}
+                <GhostModeButton defaultValue="active" onChange={(m)=>console.log(m)} />
               </div>
             </div>
             
@@ -225,10 +236,10 @@ const ProfilePage = () => {
                   <DollarSign className="h-4 w-4" />
                   {candidate.salary}
                 </div>
-                <div className="flex items-center gap-1">
+                {/* <div className="flex items-center gap-1">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   {candidate.rating}
-                </div>
+                </div> */}
               </div>
               
               <p className="text-muted-foreground">{candidate.bio}</p>
@@ -373,6 +384,68 @@ const ProfilePage = () => {
                       הוסף כישור
                     </Button>
                   </div>
+                    <div>
+                    <Label>ניסיון תעסוקתי</Label>
+                    {editForm.experience_details.map((exp, index) => (
+                      <div key={index} className="space-y-2 border p-2 rounded-md mt-2">
+                        <div>
+                          <Label htmlFor={`exp-title-${index}`}>תפקיד</Label>
+                          <Input
+                            id={`exp-title-${index}`}
+                            value={exp.title}
+                            onChange={(e) => handleNestedArrayInputChange('experience_details', index, 'title', e.target.value)}
+                            placeholder="תפקיד"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`exp-company-${index}`}>חברה</Label>
+                          <Input
+                            id={`exp-company-${index}`}
+                            value={exp.company}
+                            onChange={(e) => handleNestedArrayInputChange('experience_details', index, 'company', e.target.value)}
+                            placeholder="חברה"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`exp-period-${index}`}>תקופה</Label>
+                          <Input
+                            id={`exp-period-${index}`}
+                            value={exp.period}
+                            onChange={(e) => handleNestedArrayInputChange('experience_details', index, 'period', e.target.value)}
+                            placeholder="תקופה"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`exp-description-${index}`}>תיאור</Label>
+                          <Textarea
+                            id={`exp-description-${index}`}
+                            value={exp.description}
+                            onChange={(e) => handleNestedArrayInputChange('experience_details', index, 'description', e.target.value)}
+                            placeholder="תיאור"
+                            rows={2}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeArrayItem('experience_details', index)}
+                          className="w-full"
+                        >
+                          הסר ניסיון
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addArrayItem('experience_details')}
+                      className="mt-2"
+                    >
+                      הוסף ניסיון תעסוקתי
+                    </Button>
+                  </div>
                   
                   <div>
                     <Label>שפות</Label>
@@ -443,18 +516,18 @@ const ProfilePage = () => {
               style={{ display: 'none' }}
             />
             
-            <Button variant="outline" onClick={triggerFileUpload} className="flex-1 sm:flex-none">
+           {/*  <Button variant="outline" onClick={triggerFileUpload} className="flex-1 sm:flex-none">
               <Upload className="ml-2 h-4 w-4" />
               העלה קורות חיים
-            </Button>
+            </Button> */}
             
             <AlertDialog>
-              <AlertDialogTrigger asChild>
+             {/*  <AlertDialogTrigger asChild>
                 <Button variant="destructive" className="flex-1 sm:flex-none">
                   <Trash2 className="ml-2 h-4 w-4" />
                   מחק פרופיל
                 </Button>
-              </AlertDialogTrigger>
+              </AlertDialogTrigger> */}
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
@@ -472,13 +545,8 @@ const ProfilePage = () => {
             </AlertDialog>
           </div> 
           </>
-          
-          )
-          
-          }
-          
 
-         
+          )}
         </CardContent>
       </Card>
 
