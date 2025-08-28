@@ -417,9 +417,12 @@ function LandedPage() {
             <Button 
               size="lg" 
               variant="outline"
-              className="btn-secondary text-lg px-8 py-6 bg-black text-white"
+              className=" text-lg  bg-black text-white"
+              asChild
             >
-              נסו עכשיו בחינם
+                <Link to={Routes.signup} {...getRouteProps(Routes.register)}>
+                  נסו עכשיו בחינם
+                </Link>
             </Button>
        
           
