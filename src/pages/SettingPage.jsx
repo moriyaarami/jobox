@@ -22,8 +22,20 @@ import NotificationSettings from '@/components/settings/NotificationSettings';
 import SupportInformation from '@/components/settings/SupportInformation';
 import SecuritySettings from '@/components/settings/SecuritySettings';
 import DangerZone from '@/components/settings/DangerZone';
+import { useAuth } from '@/contexts/AuthContext';
 
 const SettingsPage = () => {
+
+   const {logout} = useAuth();
+
+    const handleOnClick=()=>{
+        confirm("Are you sure you want to log out?") && (
+            logout(),
+            SetLogInStorage('false')
+        );
+    }
+
+
   const toast = Toaster;
 
   const [activeTab, setActiveTab] = useState('notifications');
@@ -88,7 +100,7 @@ const SettingsPage = () => {
     return userType === 'job_seeker' ? 'מחפש עבודה' : 'מעסיק';
   };
 
-  const getAccountStatusBadge = (status) => {
+  /* const getAccountStatusBadge = (status) => {
     const statusConfig = {
       active: { label: 'פעיל', variant: 'default', color: 'bg-green-100 text-green-800' },
       inactive: { label: 'לא פעיל', variant: 'secondary', color: 'bg-gray-100 text-gray-800' },
@@ -101,10 +113,17 @@ const SettingsPage = () => {
         {config.label}
       </Badge>
     );
-  };
+  }; */
 
   return (
+
     <div className="max-w-6xl mx-auto space-y-6">
+       <div className="text-center space-y-4">
+            <h1 className="text-3xl font-bold">הגדרות</h1>
+           <Button size="lg" variant="destructive" onClick={handleOnClick}>
+              התנתק
+            </Button>
+        </div>
       {/* Header */}
       <Card>
         <CardHeader>
@@ -123,7 +142,7 @@ const SettingsPage = () => {
               <div className="flex items-center gap-2 mb-2">
                 <User className="w-4 h-4 text-muted-foreground" />
                 <span className="font-semibold">{currentUser.name}</span>
-                {getAccountStatusBadge(currentUser.accountStatus)}
+               {/*  {getAccountStatusBadge(currentUser.accountStatus)} */}
               </div>
               <div className="text-sm text-muted-foreground">
                 <p>{getUserTypeLabel(currentUser.userType)}</p>

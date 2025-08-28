@@ -59,7 +59,7 @@ const NotificationSettings = ({ onSave }) => {
     }
   };
 
-  const notificationTypes = [
+ /*  const notificationTypes = [
     {
       key: 'newMessages',
       title: 'הודעות חדשות',
@@ -73,14 +73,14 @@ const NotificationSettings = ({ onSave }) => {
       description: 'התראות על הזדמנויות עבודה רלוונטיות',
       icon: Bell,
       important: true
-    },
-    {
+    }, 
+     {
       key: 'interviews',
       title: 'ראיונות עבודה',
       description: 'תזכורות לראיונות ועדכונים על סטטוס',
       icon: Bell,
       important: true
-    },
+    }, 
     {
       key: 'payments',
       title: 'תשלומים וחיובים',
@@ -94,8 +94,8 @@ const NotificationSettings = ({ onSave }) => {
       description: 'הצעות מיוחדות, עדכוני מוצר וחדשות הפלטפורמה',
       icon: Bell,
       important: false
-    }
-  ];
+    } 
+  ];   */
 
   const frequencyOptions = [
     { value: 'immediate', label: 'מיידי' },
@@ -133,7 +133,7 @@ const NotificationSettings = ({ onSave }) => {
 
           {settings.pushEnabled && (
             <div className="space-y-4">
-              {notificationTypes.map((type) => {
+            {/*   {notificationTypes.map((type) => {
                 const IconComponent = type.icon;
                 const pushKey = `push${type.key.charAt(0).toUpperCase() + type.key.slice(1)}`;
                 
@@ -162,7 +162,7 @@ const NotificationSettings = ({ onSave }) => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
 
               <Separator />
 
@@ -218,7 +218,7 @@ const NotificationSettings = ({ onSave }) => {
 
           {settings.emailEnabled && (
             <div className="space-y-4">
-              {notificationTypes.map((type) => {
+            {/*   {notificationTypes.map((type) => {
                 const IconComponent = type.icon;
                 const emailKey = `email${type.key.charAt(0).toUpperCase() + type.key.slice(1)}`;
                 
@@ -247,10 +247,10 @@ const NotificationSettings = ({ onSave }) => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
 
               {/* Weekly digest */}
-              <div className="flex items-center justify-between py-3 border-t">
+           {/*    <div className="flex items-center justify-between py-3 border-t">
                 <Switch
                   checked={settings.emailWeeklyDigest}
                   onCheckedChange={(checked) => handleSettingChange('emailWeeklyDigest', checked)}
@@ -264,7 +264,7 @@ const NotificationSettings = ({ onSave }) => {
                     סיכום שבועי של הפעילות והזדמנויות חדשות
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               <Separator />
 
